@@ -1,0 +1,59 @@
+package EmployeeWageBuilder;
+
+import CompanyEmpWage.CompanyEmpWage;
+
+public class EmployeeWageBuilder {
+	
+	public static final int IS_PART_TIME = 1;
+	public static final int IS_FULL_TIME = 2;
+
+	private int numOfCompany = 0;
+	private CompanyEmpWage[] companyEmpWageArray;
+
+	public EmployeeWageBuilder() {
+		companyEmpWageArray = new CompanyEmpWage[5];
+	}
+
+	private void addCompanyEmpWage(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth) {
+		companyEmpWageArray[numOfCompany] = new CompanyEmpWage(company, empRatePerHour, numOfWorkingDays, maxHoursPerMonth);
+		numOfCompany++;
+	}
+
+	private void calculateEmpWage() {
+		for ( int i = 0; i < numOfCompany; i++){
+		int totalEmpWage = calculateEmpHrs(companyEmpWageArray[i]);
+		System.out.println("Total Emp Wage for Company " + companyEmpWageArray[i].company + " is : " +totalEmpWage);
+		}
+	}
+
+	private int calculateEmpHrs(CompanyEmpWage companyEmpWage) {
+		int empHrs = 0;
+	        int totalEmpHrs = 0;
+	        int totalWorkingDays = 0;
+		while (totalEmpHrs <= companyEmpWage.maxHoursPerMonth && totalWorkingDays < companyEmpWage.numOfWorkingDays){
+		totalWorkingDays++;
+		int empCheck = (int) Math.floor(Math.random() * 10) % 3;
+	        switch (empCheck) {
+	                case IS_FULL_TIME:
+				empHrs = 8;
+	                        break;
+	                case IS_PART_TIME:
+	                        empHrs = 4;
+	                        break;
+	                default:
+	                        empHrs = 0;
+		}
+ 		totalEmpHrs += empHrs;
+                System.out.println("Day# : " + totalWorkingDays + " Emp Hrs : " +empHrs);
+        }
+        return totalEmpHrs * companyEmpWage.empRatePerHour;
+	}
+
+	public static void main (String args []){
+		EmployeeWageBuilder employeeWageBuilder = new EmployeeWageBuilder();
+		employeeWageBuilder.addCompanyEmpWage("D-Mart", 30, 20, 150);
+		employeeWageBuilder.addCompanyEmpWage("Relience", 20, 30, 160);
+		employeeWageBuilder.calculateEmpWage();
+	}
+}
+
